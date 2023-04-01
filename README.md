@@ -24,9 +24,12 @@ As soon as we initialize the instance , it automatically create
 auto sync time.
 
 Whenever we are declaring the variable, we are defining it. This
-is the eager initialisation.
+is the eager initialisation. At the same time, we are doing.
 
 Lazy Initialisation
+
+Whever there's a need ot a call, then only it will create the object.
+
 Thread safe method initialisation
 Thread safe block initialisation
 
@@ -43,7 +46,7 @@ class Singleton {
   private Singleton(){}
   public static Singleton getInstance() {
     if(instance == null) {
-      instance = new Singleton();
+      instance = new Singleton(); 
     }
     return instance;
   }
@@ -84,3 +87,8 @@ public class SingletonExample {
   }
 }
 ```
+
+```
+Factory Design Patterm
+```
+
