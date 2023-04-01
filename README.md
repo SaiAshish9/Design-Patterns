@@ -6,4 +6,6 @@ Creational design pattern
 Only one instance of class should exist throughout the implementation.
 Other classes should be able to get instance of singleton class
 Used in logging, cache, session, drivers
+
+https://thecodingsimplified.com/singleton-design-pattern/
 ```
