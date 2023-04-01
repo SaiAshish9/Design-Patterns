@@ -8,4 +8,6 @@ Other classes should be able to get instance of singleton class
 Used in logging, cache, session, drivers
 
 https://thecodingsimplified.com/singleton-design-pattern/
+
+https://www.tutorialspoint.com/design_pattern/design_pattern_overview.htm
 ```
