@@ -97,6 +97,12 @@ input we want to return once class instance.
 It provides abstraction between implementation and client classes
 Remove the instantiation of client classes from client code.
 
+Implementation 
+
+Super class can be interface or abstract class or basic class
+Factory class has a static method which returns the instance of
+sub-class on input.
+
 abstract class Vehicle {
   public abstract int getWheel();
   
@@ -152,4 +158,8 @@ public class FactoryPatternExample {
   }
 
 }
+```
+
+```
+Builder Pattern
 ```
