@@ -1,6 +1,7 @@
 ```
 https://thecodingsimplified.com/singleton-design-pattern/
 https://www.tutorialspoint.com/design_pattern/design_pattern_overview.htm
+https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5oblbx&index=3
 
 Singleton Design Pattern Properties
 
@@ -162,4 +163,6 @@ public class FactoryPatternExample {
 
 ```
 Builder Pattern
+
+https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5oblbx&index=3
 ```
