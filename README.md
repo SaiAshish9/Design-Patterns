@@ -1096,6 +1096,10 @@ Observer Design Pattern
 Properties
 
 Implementation
+
+All the parties are interested in knowing the current location of the product.
+
+Seller, User and Warehouse
 ```
 
 <img width="799" alt="Screenshot 2023-04-04 at 12 23 26 AM" src="https://user-images.githubusercontent.com/43849911/229600728-690f43ce-89e3-4545-b770-a612e92fbebe.png">
@@ -1218,4 +1222,10 @@ public class ObserverPatternTest {
     
   }
 }
+```
+
+<img width="409" alt="Screenshot 2023-04-04 at 12 29 52 AM" src="https://user-images.githubusercontent.com/43849911/229601937-47ae4eaf-6e86-45a6-ac5a-ee63ecd48bd5.png">
+
+```
+
 ```
