@@ -1,4 +1,31 @@
 ```
+1. Singleton
+2. Factory
+3. Builder
+4. Prototype
+5. Proxy
+6. Fascade
+7. Composite
+8. Decorator
+9. Flyweight
+10. Adaptor
+11. Bridge 
+12. Observer
+13. Strategy
+14. Abstract Factory
+15. Chain Of Responsibility
+16. Null Object
+17. State
+18. Command
+19. Intepreter
+20. Iterator
+21. Mediator
+22. Memento
+23. Template Method
+24. Visitor
+```
+
+```
 https://thecodingsimplified.com/singleton-design-pattern/
 https://www.tutorialspoint.com/design_pattern/design_pattern_overview.htm
 https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5oblbx&index=3
@@ -249,4 +276,21 @@ public class BuilderPatternExample {
     System.out.println(bike.getAirbags());
   }
 }
+```
+
+```
+Prototype Design Pattern
+
+Creational design pattern
+
+Used when you want to avoid multiple object creation of same
+instance; instead you copy the object to new object and then we can
+modify as per our need.
+
+Implementation
+
+Object which we're copying should provide copying feature by implementing 
+cloneable interface.
+We can override clone() method to implement as per our need
+
 ```
