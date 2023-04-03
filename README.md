@@ -624,12 +624,12 @@ should not change individual Object functionality.
 i.e. Adding different functionalities in Dress
 
 Implementation 
+```
+
 
 <img width="764" alt="Screenshot 2023-04-03 at 11 14 41 PM" src="https://user-images.githubusercontent.com/43849911/229586861-2fb99616-d18f-4e73-9a6b-a5d19f8587d7.png">
 
-
-
-
+```
 package decorator;
 
 interface Dress {
