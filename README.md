@@ -425,6 +425,8 @@ public class ProxyPatternExample {
 ```
 Facade Design Pattern
 
+Facade => the front wall of a large building that you see from the outside
+
 Structural design 
 
 Used when there're multiple interfaces of similar kind of jobs, then
@@ -515,7 +517,215 @@ public class FacadePatternExample {
 ```
 Composite Design Pattern
 
+Properties
 
+Structural design pattern
+Composite lets client treats individual objects(Leaf) and compositions of
+objects (Composite) uniformly
+Four Participants: Component, Leaf, Composite, Client
+If object is leaf node, request is handled directly, If object is Composite, it
+forward request to child, so some operation and combine operations.
+
+Implementation 
+
+Component: Account class, which contains common method
+Leaf: Deposite Account & Savings Account
+Composite: Composite Account
+Client: Client class
+
+We'll get balance of all account for a Person
+
+
+package composite;
+
+import java.util.ArrayList;
+import java.util.List;
+
+abstract class Account {
+  public abstract float getBalance();
+}
+
+class DepositeAccount extends Account {
+  private String accountNo;
+  private float accountBalance;
+
+  public DepositeAccount(String accountNo, float accountBalance) {
+    super();
+    this.accountNo = accountNo;
+    this.accountBalance = accountBalance;
+  }
+
+  public float getBalance() {
+    return accountBalance;
+  }
+
+}
+
+class SavingAccount extends Account {
+  private String accountNo;
+  private float accountBalance;
+
+  public SavingAccount(String accountNo, float accountBalance) {
+    super();
+    this.accountNo = accountNo;
+    this.accountBalance = accountBalance;
+  }
+
+  public float getBalance() {
+    return accountBalance;
+  }
+}
+
+class CompositeAccount extends Account {
+  private float totalBalance;
+  private List<Account> accountList = new ArrayList<Account>();
+
+  public float getBalance() {
+    totalBalance = 0;
+    for (Account f : accountList) {
+      totalBalance = totalBalance + f.getBalance();
+    }
+    return totalBalance;
+  }
+
+  public void addAccount(Account acc) {
+    accountList.add(acc);
+  }
+
+  public void removeAccount(Account acc) {
+    accountList.add(acc);
+  }
+}
+
+public class Client {
+
+  public static void main(String[] args) {
+    CompositeAccount component = new CompositeAccount();
+
+    component.addAccount(new DepositeAccount("DA001", 100));
+    component.addAccount(new DepositeAccount("DA002", 150));
+    component.addAccount(new SavingAccount("SA001", 200));
+
+    float totalBalance = component.getBalance();
+    System.out.println("Total Balance : " + totalBalance);
+  }
+
+}
 ```
 
+```
+Decorator Design Pattern
 
+Properties
+
+Structiral design pattern
+Used when we want to modify functionality of an Object at runtime & it
+should not change individual Object functionality.
+i.e. Adding different functionalities in Dress
+
+Implementation 
+
+<img width="764" alt="Screenshot 2023-04-03 at 11 14 41 PM" src="https://user-images.githubusercontent.com/43849911/229586861-2fb99616-d18f-4e73-9a6b-a5d19f8587d7.png">
+
+
+
+
+package decorator;
+
+interface Dress {
+  public void assemble();
+}
+
+class BasicDress implements Dress {
+  @Override
+  public void assemble() {
+    System.out.println("Basic Dress Features");
+  }
+}
+
+class DressDecorator implements Dress {
+  protected Dress dress;
+  
+  public DressDecorator(Dress c) {
+    this.dress = c;
+  }
+
+  @Override
+  public void assemble() {
+    this.dress.assemble();
+  }
+}
+
+class CasualDress extends DressDecorator {
+  public CasualDress(Dress c) {
+    super(c);
+  }
+  
+  @Override
+  public void assemble() {
+    super.assemble();
+    System.out.println("Adding Casual Dress Features");
+  }
+}
+
+
+class SportyDress extends DressDecorator {
+  public SportyDress(Dress c) {
+    super(c);
+  }
+  
+  @Override
+  public void assemble() {
+    super.assemble();
+    System.out.println("Adding Sporty Dress Features");
+  }
+}
+
+class FancyDress extends DressDecorator {
+  public FancyDress(Dress c) {
+    super(c);
+  }
+  
+  @Override
+  public void assemble() {
+    super.assemble();
+    System.out.println("Adding Fancy Dress Features");
+  }
+}
+
+public class DecoratorPatterTest {
+
+  public static void main(String[] args) {
+
+    Dress sportyDress = new SportyDress(new BasicDress());
+    sportyDress.assemble();
+    System.out.println();
+    
+    Dress fancyDress = new FancyDress(new BasicDress());
+    fancyDress.assemble();
+    System.out.println();
+    
+    Dress casualDress = new CasualDress(new BasicDress());
+    casualDress.assemble();
+    System.out.println();
+    
+    
+    Dress sportyFancyDress = new SportyDress(new FancyDress(new BasicDress()));
+    sportyFancyDress.assemble();
+    System.out.println();
+    
+    Dress casualFancyDress = new CasualDress(new FancyDress(new BasicDress()));
+    casualFancyDress.assemble();
+    
+  }
+}
+```
+
+```
+Flyweight Design Pattern
+
+Properties
+
+Implementation 
+
+```
