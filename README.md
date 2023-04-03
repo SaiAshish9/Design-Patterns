@@ -8,7 +8,7 @@
 7. Composite
 8. Decorator
 9. Flyweight
-10. Adaptor
+10. Adapter
 11. Bridge 
 12. Observer
 13. Strategy
@@ -726,6 +726,227 @@ Flyweight Design Pattern
 
 Properties
 
+Structural design pattern
+Used when we need to create many objects of a class. We use it to reduce
+creation of object.
+Intrinsic Properties: Which are same for a object.
+Extrinsic Properties: Which are different for a object.
+
 Implementation 
 
+Interface: Which contain common method: Employee
+Object: Individual Class: Developer, Tester
+Intrinsic Property (Developer: Fix the issue, Tester: Test the issue)
+Extrinsic Property: Skills
+We use Factory to use return Object: EmployeeFactory
+Client: Client class
+
+We'll assign issues as per skills
+
+package flyweight;
+
+import java.util.HashMap;
+import java.util.Random;
+
+interface Employee {
+  public void assignSkill(String skill);
+  public void task();
+}
+
+class Developer implements Employee {
+
+  private final String JOB;
+  private String skill;
+  
+  public Developer() {
+    JOB = "Fix the issue";
+  }
+  
+  @Override
+  public void assignSkill(String skill) {
+    this.skill = skill;
+  }
+
+  @Override
+  public void task() {
+    System.out.println("Developer with skill: " + this.skill + " with Job: " + JOB);
+  }
+  
+}
+
+class Tester implements Employee {
+
+  private final String JOB;
+  
+  private String skill;
+  
+  public Tester() {
+    JOB = "Test the issue";
+  }
+  
+  @Override
+  public void assignSkill(String skill) {
+    this.skill = skill;
+  }
+
+  @Override
+  public void task() {
+    System.out.println("Tester with Skill: " + this.skill + " with Job: " + JOB);
+  }
+  
+}
+
+
+class EmployeeFactory {
+  private static HashMap<String, Employee> m = new HashMap<String, Employee>();
+  
+  public static Employee getEmployee(String type) {
+    Employee p = null;
+    if(m.get(type) != null) {
+      p = m.get(type);
+    } else {
+      switch(type) {
+      case "Developer": 
+        System.out.println("Developer Created");
+        p = new Developer();
+        break;
+      case "Tester":
+        System.out.println("Tester Created");
+        p = new Tester();
+        break;
+      default:
+        System.out.println("No Such Employee");
+      }
+      
+      m.put(type, p);
+    }
+    return p;
+  }
+}
+
+public class Engineering {
+
+  private static String employeeType[] = {"Developer", "Tester"};
+  private static String skills[] = {"Java", "C++", ".Net", "Python"};
+  
+  public static void main(String[] args) {
+    for(int i = 0; i < 10; i++) {
+      Employee e = EmployeeFactory.getEmployee(getRandEmployee());
+      
+      e.assignSkill(getRandSkill());
+      
+      e.task();
+    }
+  }
+  
+  public static String getRandEmployee() {
+    Random r = new Random();
+    int randInt = r.nextInt(employeeType.length);
+    
+    return employeeType[randInt];
+  }
+  
+  public static String getRandSkill() {
+    Random r = new Random();
+    int randInt = r.nextInt(skills.length);
+    
+    return skills[randInt];
+  }
+
+}
+```
+
+```
+10. Adapter Design Pattern
+
+Properties
+
+Structural design pattern
+When objects offering same features, but has different interface i.e.
+Charging adapter, USB to Ethernet Adapter
+It allows existing classes to be used with others without modifying their
+source code
+i.e: WebDriver Adapter
+
+
+Implementation
+```
+
+<img width="770" alt="Screenshot 2023-04-03 at 11 53 02 PM" src="https://user-images.githubusercontent.com/43849911/229594571-3763940c-60a1-480e-89d9-596f6a151361.png">
+
+
+```
+package adapter;
+
+interface WebDriver {
+  public void getElement();
+  public void selectElement();
+}
+
+
+class ChromeDriver implements WebDriver {
+
+  @Override
+  public void getElement() {
+    System.out.println("Get element from ChromeDriver");
+  }
+
+  @Override
+  public void selectElement() {
+    System.out.println("Select element from ChromeDriver");
+    
+  }
+  
+}
+
+class IEDriver {
+
+  public void findElement() {
+    System.out.println("Find element from IEDriver");
+  }
+
+  public void clickElement() {
+    System.out.println("Click element from IEDriver");
+  }
+  
+}
+
+class WebDriverAdapter implements WebDriver {
+
+  IEDriver ieDriver;
+  
+  public WebDriverAdapter(IEDriver ieDriver) {
+    this.ieDriver = ieDriver;
+  }
+  
+  @Override
+  public void getElement() {
+    ieDriver.findElement();
+    
+  }
+
+  @Override
+  public void selectElement() {
+    ieDriver.clickElement();
+  }
+  
+}
+
+public class AdapterDesignPattern {
+
+  public static void main(String[] args) {
+    ChromeDriver a = new ChromeDriver();
+    a.getElement();
+    a.selectElement();
+    
+    IEDriver e = new IEDriver();
+    e.findElement();
+    e.clickElement();
+    
+    WebDriver wID = new WebDriverAdapter(e);
+    wID.getElement();
+    wID.selectElement(); 
+  }
+
+}
 ```
