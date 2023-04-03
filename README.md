@@ -870,6 +870,12 @@ i.e: WebDriver Adapter
 
 
 Implementation
+
+Interface: WebDriver
+Interface Implementation: ChromeDriver, WebDriverAdapter
+Adapter: WebDriverAdapter
+Adaptee: ieDriver
+Client: AdapterPatternTest
 ```
 
 <img width="770" alt="Screenshot 2023-04-03 at 11 53 02 PM" src="https://user-images.githubusercontent.com/43849911/229594571-3763940c-60a1-480e-89d9-596f6a151361.png">
@@ -939,6 +945,10 @@ public class AdapterDesignPattern {
     a.getElement();
     a.selectElement();
     
+    WebDriver a1 = new ChromeDriver();
+    a1.getElement();
+    a1.selectElement();
+    
     IEDriver e = new IEDriver();
     e.findElement();
     e.clickElement();
@@ -948,5 +958,264 @@ public class AdapterDesignPattern {
     wID.selectElement(); 
   }
 
+}
+```
+
+```
+Bridge Design Pattern
+
+Properties
+
+Structural design pattern
+Used when we've hierarchies in both interfaces as well as implementations and
+we want to hide the implementation from client
+It decouples abstraction from its implementation
+
+Generally we've remote, which works differently for Sony & Philips TV, but we can
+have different Remote as well, i.e. oldRemote & newRemote, which have different
+methods for each TV.
+
+i.e.: TV & Remote Implementation
+
+Implementation 
+class heirarchy: TV, SonyTV, PhilipsTV
+Interface hierarchy: Remote, OldRemote, NewRemote
+Client: Client class
+
+package bridge;
+
+abstract class TV {
+  Remote remote;
+  
+  TV(Remote r) {
+    this.remote = r;
+  }
+  
+  abstract void on();
+  abstract void off();
+}
+
+class Sony extends TV {
+  Remote remoteType;
+  Sony(Remote r) {
+    super(r);
+    this.remoteType = r;
+  }
+  
+  public void on(){
+    System.out.print("Sony TV ON: ");
+    remoteType.on();
+  }
+    
+  public void off(){
+    System.out.print("Sony TV OFF: ");
+    remoteType.off();
+  }
+}
+    
+class Philips extends TV {
+  Remote remoteType;
+  
+  Philips(Remote r) {
+    super(r);
+    this.remoteType = r;
+  }
+  
+  public void on(){
+    System.out.print("Philips TV ON: ");
+    remoteType.on();
+  }
+    
+  public void off(){
+    System.out.print("Philips TV OFF: ");
+    remoteType.off();
+  }
+}
+
+interface Remote {
+  public void on();
+  public void off();
+}
+
+class OldRemote implements Remote {
+
+  @Override
+  public void on() {
+    System.out.println("ON with Old Remote");
+  }
+
+  @Override
+  public void off() {
+    System.out.println("OFF with old Remote");
+  }
+  
+}
+
+class NewRemote implements Remote {
+
+  @Override
+  public void on() {
+    System.out.println("ON with New Remote");
+  }
+
+  @Override
+  public void off() {
+    System.out.println("OFF with New Remote");
+  }
+  
+}
+
+public class Client {
+  public static void main(String[] args) {
+    TV sonyOldRemote = new Sony(new OldRemote());
+    sonyOldRemote.on();
+    sonyOldRemote.off();
+    System.out.println();
+    
+    TV sonyNewRemote = new Sony(new NewRemote());
+    sonyNewRemote.on();
+    sonyNewRemote.off();
+    System.out.println();
+    
+    TV philipsOldRemote = new Philips(new OldRemote());
+    philipsOldRemote.on();
+    philipsOldRemote.off();
+    System.out.println();
+    
+    TV philipsNewRemote = new Philips(new NewRemote());
+    philipsNewRemote.on();
+    philipsNewRemote.off();
+    
+  }
+}
+```
+
+```
+Observer Design Pattern
+
+Properties
+
+Implementation
+```
+
+<img width="799" alt="Screenshot 2023-04-04 at 12 23 26 AM" src="https://user-images.githubusercontent.com/43849911/229600728-690f43ce-89e3-4545-b770-a612e92fbebe.png">
+
+```
+package observer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+interface Subject {
+  void register(Observer obj);
+  void unregister(Observer obj);
+  void notifyObservers();
+}
+
+class DeliveryData implements Subject {
+
+  private List<Observer> observers;
+  private String location;
+  
+  public DeliveryData() {
+    this.observers = new ArrayList<>();
+  }
+  
+  @Override
+  public void register(Observer obj) {
+    observers.add(obj);
+  }
+
+  @Override
+  public void unregister(Observer obj) {
+      observers.remove(obj);
+  }
+
+  @Override
+  public void notifyObservers() {
+    for(Observer obj : observers) {
+      obj.update(location);
+    }
+  }
+
+  public void locationChanged() {
+    this.location = getLocation();
+    notifyObservers();
+  }
+  
+  public String getLocation() {
+    return "YPlace";
+  }
+}
+
+
+interface Observer {
+  public void update(String location);
+}
+
+
+class Seller implements Observer {
+  private String location;
+  
+  @Override
+  public void update(String location) {
+    this.location = location;
+    showLocation();
+  }
+
+  public void showLocation() {
+    System.out.println("Notification at Seller - Current Location: " + location);
+  }
+}
+
+class User implements Observer {
+  private String location;
+  
+  @Override
+  public void update(String location) {
+    this.location = location;
+    showLocation();
+  }
+
+  public void showLocation() {
+    System.out.println("Notification at User - Current Location: " + location);
+  }
+}
+
+class DeliveryWarehouseCenter implements Observer {
+  private String location;
+  
+  @Override
+  public void update(String location) {
+    this.location = location;
+    showLocation();
+  }
+
+  public void showLocation() {
+    System.out.println("Notification at Warehouse - Current Location: " + location);
+  }
+}
+
+public class ObserverPatternTest {
+
+  public static void main(String[] args) {
+    DeliveryData topic = new DeliveryData();
+    
+    Observer obj1 = new Seller();
+    Observer obj2 = new User();
+    Observer obj3 = new DeliveryWarehouseCenter();
+    
+    topic.register(obj1);
+    topic.register(obj2);
+    topic.register(obj3);
+    
+    topic.locationChanged();
+    
+    topic.unregister(obj3);
+    
+    System.out.println();
+    topic.locationChanged();
+    
+  }
 }
 ```
