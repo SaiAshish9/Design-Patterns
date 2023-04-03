@@ -13,7 +13,7 @@
 12. Observer
 13. Strategy
 14. Abstract Factory
-15. Chain Of Responsibility
+15. Chain Of Responsibility*
 16. Null Object
 17. State
 18. Command
@@ -293,4 +293,131 @@ Object which we're copying should provide copying feature by implementing
 cloneable interface.
 We can override clone() method to implement as per our need
 
+
+package prototype;
+import java.util.ArrayList;
+import java.util.List;
+
+class Vehicle implements Cloneable {
+  private List<String> vehicleList;
+  
+  public Vehicle() {
+    this.vehicleList = new ArrayList<String>();
+  }
+  
+  public Vehicle(List<String> list) {
+    this.vehicleList = list;
+  }
+  
+  public void insertData() {
+    vehicleList.add("Honda amaze");
+    vehicleList.add("Audi A4");
+    vehicleList.add("Hyundai Creta");
+    vehicleList.add("Maruti Baleno");
+    vehicleList.add("Renault Duster");
+  }
+  
+  public List<String> getVehicleList() {
+    return this.vehicleList;
+  }
+  
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    List<String> tempList = new ArrayList<String>();
+    
+    for(String s : this.getVehicleList()) {
+      tempList.add(s);
+    }
+    
+    return new Vehicle(tempList);
+  }
+}
+
+public class PrototypePatternExample {
+
+  public static void main(String[] args) throws CloneNotSupportedException {
+    Vehicle a = new Vehicle();
+    a.insertData();
+    Vehicle b = (Vehicle) a.clone();
+    List<String> list = b.getVehicleList();
+    list.add("Honda new Amaze");
+    System.out.println(a.getVehicleList());
+    System.out.println(list);
+    b.getVehicleList().remove("Audi A4");
+    System.out.println(list);
+    System.out.println(a.getVehicleList());
+  }
+
+}
+```
+
+```
+Proxy Pattern
+
+Structural design pattern
+It improves the structure of java code. They communicates with the interfaces and
+provide better interface.
+
+Used when we want to control access, i.e. In databases, we would want
+to control the 'delete' query available only for certain users like admin.
+
+Implementation 
+
+In general, we've class which is executing interface executor method,
+which is executing all commands.
+To control this, we add a proxy class which implements the same interface 
+and write the conditions for 'admin' user before proceeding to actual
+executor.
+
+package proxy;
+interface DatabaseExecuter {
+  public void executeDatabase(String query) throws Exception;
+}
+
+class DatabaseExecuterImpl implements DatabaseExecuter {
+
+  @Override
+  public void executeDatabase(String query) throws Exception {
+    System.out.println("Going to execute Query: " + query);
+  }
+  
+}
+
+class DatabaseExecuterProxy implements DatabaseExecuter {
+  boolean ifAdmin;
+  DatabaseExecuterImpl dbExecuter;
+  
+  public DatabaseExecuterProxy(String name, String passwd) {
+    if(name == "Admin" && passwd == "Admin@123") {
+      ifAdmin = true;
+    }
+    dbExecuter = new DatabaseExecuterImpl();
+  }
+
+  @Override
+  public void executeDatabase(String query) throws Exception {
+    if(ifAdmin) {
+      dbExecuter.executeDatabase(query);
+    } else {
+      if(query.equals("DELETE")) {
+        throw new Exception("DELETE not allowed for non-admin user");
+      } else {
+        dbExecuter.executeDatabase(query);
+      }
+    }
+  }
+}
+
+public class ProxyPatternExample {
+
+  public static void main(String[] args) throws Exception {
+    DatabaseExecuter nonAdminExecuter = new DatabaseExecuterProxy("NonAdmin", "Admin@123");
+    nonAdminExecuter.executeDatabase("DELEE");
+    DatabaseExecuter nonAdminExecuterDELETE = new DatabaseExecuterProxy("NonAdmin", "Admin@123");
+    nonAdminExecuterDELETE.executeDatabase("DELETE");
+    DatabaseExecuter adminExecuter = new DatabaseExecuterProxy("Admin", "Admin@123");
+    adminExecuter.executeDatabase("DELETE");
+  }
+
+}
 ```
