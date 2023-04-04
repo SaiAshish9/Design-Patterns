@@ -2708,7 +2708,7 @@ We are going to create a FrontController and Dispatcher to act as Front Controll
 FrontControllerPatternDemo, our demo class, will use FrontController to demonstrate Front Controller Design Pattern.
 ```
 
-<img width="846" alt="Screenshot 2023-04-04 at 6 25 12 PM" src="https://user-images.githubusercontent.com/43849911/229798270-5a36f6fc-907a-4c52-9d57-2b524204f5e2.png"
+<img width="846" alt="Screenshot 2023-04-04 at 6 25 12 PM" src="https://user-images.githubusercontent.com/43849911/229798270-5a36f6fc-907a-4c52-9d57-2b524204f5e2.png" />
 
 ```   
 public class HomeView {
@@ -2716,4 +2716,79 @@ public class HomeView {
       System.out.println("Displaying Home Page");
    }
 }
+
+public class StudentView {
+   public void show(){
+      System.out.println("Displaying Student Page");
+   }
+}
+
+public class Dispatcher {
+   private StudentView studentView;
+   private HomeView homeView;
+   
+   public Dispatcher(){
+      studentView = new StudentView();
+      homeView = new HomeView();
+   }
+
+   public void dispatch(String request){
+      if(request.equalsIgnoreCase("STUDENT")){
+         studentView.show();
+      }
+      else{
+         homeView.show();
+      }	
+   }
+}
+
+public class FrontController {
+	
+   private Dispatcher dispatcher;
+
+   public FrontController(){
+      dispatcher = new Dispatcher();
+   }
+
+   private boolean isAuthenticUser(){
+      System.out.println("User is authenticated successfully.");
+      return true;
+   }
+
+   private void trackRequest(String request){
+      System.out.println("Page requested: " + request);
+   }
+
+   public void dispatchRequest(String request){
+      //log each request
+      trackRequest(request);
+      
+      //authenticate the user
+      if(isAuthenticUser()){
+         dispatcher.dispatch(request);
+      }	
+   }
+}
+
+public class FrontControllerPatternDemo {
+   public static void main(String[] args) {
+   
+      FrontController frontController = new FrontController();
+      frontController.dispatchRequest("HOME");
+      frontController.dispatchRequest("STUDENT");
+   }
+}
+
+Page requested: HOME
+User is authenticated successfully.
+Displaying Home Page
+Page requested: STUDENT
+User is authenticated successfully.
+Displaying Student Page
+```
+
+```
+29. Intercepting
+
+
 ```
