@@ -32,7 +32,12 @@
 31. Intercepting
 32. Service Locator
 33. Transfer Object
+34. Business Delegate
+35. Composite Entity
+36. Creational, Structural & Behavioral
 ```
+
+https://refactoring.guru/design-patterns/catalog
 
 ```
 https://thecodingsimplified.com/singleton-design-pattern/
