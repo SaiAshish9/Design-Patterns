@@ -30,16 +30,15 @@ https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5ob
 23. Template
 24. Visitor
 25. Filter
-26. Template
-27. MVC
-28. Data Access
-39. Front Controller
-30. Intercepting
-31. Service Locator
-32. Transfer Object
-33. Business Delegate
-34. Composite Entity
-35. Gang of Four (GOF)
+26. MVC
+27. Data Access
+28. Front Controller
+29. Intercepting
+30. Service Locator
+31. Transfer Object
+32. Business Delegate
+33. Composite Entity
+34. Gang of Four (GOF)
 ```
 
 ```
@@ -2459,6 +2458,120 @@ Person : [ Name : Laura, Gender : Female, Marital Status : Married ]
 ```
 
 ```
+26. MVC Design Pattern
 
+MVC Pattern stands for Model-View-Controller Pattern. This pattern is used to separate application's concerns.
+
+Model - Model represents an object or JAVA POJO carrying data. It can also have logic to update controller if its data changes.
+View - View represents the visualization of the data that model contains.
+Controller - Controller acts on both model and view. It controls the data flow into model object and updates the view whenever data changes. It keeps view and model separate.
+
+We are going to create a Student object acting as a model.StudentView will be a view class which can print student details on console and StudentController is the controller class responsible to store data in Student object and update view StudentView accordingly.
+
+MVCPatternDemo, our demo class, will use StudentController to demonstrate use of MVC pattern.
 ```
 
+<img width="853" alt="Screenshot 2023-04-04 at 6 03 16 PM" src="https://user-images.githubusercontent.com/43849911/229792521-f0cae191-b8ae-49f3-8cc2-d1d98d1200e8.png">
+
+```
+public class Student {
+   private String rollNo;
+   private String name;
+   
+   public String getRollNo() {
+      return rollNo;
+   }
+   
+   public void setRollNo(String rollNo) {
+      this.rollNo = rollNo;
+   }
+   
+   public String getName() {
+      return name;
+   }
+   
+   public void setName(String name) {
+      this.name = name;
+   }
+}
+
+public class StudentView {
+   public void printStudentDetails(String studentName, String studentRollNo){
+      System.out.println("Student: ");
+      System.out.println("Name: " + studentName);
+      System.out.println("Roll No: " + studentRollNo);
+   }
+}
+
+public class StudentController {
+   private Student model;
+   private StudentView view;
+
+   public StudentController(Student model, StudentView view){
+      this.model = model;
+      this.view = view;
+   }
+
+   public void setStudentName(String name){
+      model.setName(name);		
+   }
+
+   public String getStudentName(){
+      return model.getName();		
+   }
+
+   public void setStudentRollNo(String rollNo){
+      model.setRollNo(rollNo);		
+   }
+
+   public String getStudentRollNo(){
+      return model.getRollNo();		
+   }
+
+   public void updateView(){				
+      view.printStudentDetails(model.getName(), model.getRollNo());
+   }	
+}
+
+public class MVCPatternDemo {
+   public static void main(String[] args) {
+
+      //fetch student record based on his roll no from the database
+      Student model  = retriveStudentFromDatabase();
+
+      //Create a view : to write student details on console
+      StudentView view = new StudentView();
+
+      StudentController controller = new StudentController(model, view);
+
+      controller.updateView();
+
+      //update model data
+      controller.setStudentName("John");
+
+      controller.updateView();
+   }
+
+   private static Student retriveStudentFromDatabase(){
+      Student student = new Student();
+      student.setName("Robert");
+      student.setRollNo("10");
+      return student;
+   }
+}
+
+Output
+
+Student: 
+Name: Robert
+Roll No: 10
+Student: 
+Name: John
+Roll No: 10
+```
+
+```
+27. Data Access
+
+
+```
