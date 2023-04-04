@@ -2588,5 +2588,128 @@ We are going to create a Student object acting as a Model or Value Object.Studen
 <img width="861" alt="Screenshot 2023-04-04 at 6 18 15 PM" src="https://user-images.githubusercontent.com/43849911/229796463-43778d7b-66d2-4aff-9b0d-b4a16bb73ada.png">
 
 ```
+public class Student {
+   private String name;
+   private int rollNo;
+
+   Student(String name, int rollNo){
+      this.name = name;
+      this.rollNo = rollNo;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public int getRollNo() {
+      return rollNo;
+   }
+
+   public void setRollNo(int rollNo) {
+      this.rollNo = rollNo;
+   }
+}
+
+import java.util.List;
+
+public interface StudentDao {
+   public List<Student> getAllStudents();
+   public Student getStudent(int rollNo);
+   public void updateStudent(Student student);
+   public void deleteStudent(Student student);
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentDaoImpl implements StudentDao {
+	
+   //list is working as a database
+   List<Student> students;
+
+   public StudentDaoImpl(){
+      students = new ArrayList<Student>();
+      Student student1 = new Student("Robert",0);
+      Student student2 = new Student("John",1);
+      students.add(student1);
+      students.add(student2);		
+   }
+   @Override
+   public void deleteStudent(Student student) {
+      students.remove(student.getRollNo());
+      System.out.println("Student: Roll No " + student.getRollNo() + ", deleted from database");
+   }
+
+   //retrive list of students from the database
+   @Override
+   public List<Student> getAllStudents() {
+      return students;
+   }
+
+   @Override
+   public Student getStudent(int rollNo) {
+      return students.get(rollNo);
+   }
+
+   @Override
+   public void updateStudent(Student student) {
+      students.get(student.getRollNo()).setName(student.getName());
+      System.out.println("Student: Roll No " + student.getRollNo() + ", updated in the database");
+   }
+}
+
+public class DaoPatternDemo {
+   public static void main(String[] args) {
+      StudentDao studentDao = new StudentDaoImpl();
+
+      //print all students
+      for (Student student : studentDao.getAllStudents()) {
+         System.out.println("Student: [RollNo : " + student.getRollNo() + ", Name : " + student.getName() + " ]");
+      }
+
+
+      //update student
+      Student student =studentDao.getAllStudents().get(0);
+      student.setName("Michael");
+      studentDao.updateStudent(student);
+
+      //get the student
+      studentDao.getStudent(0);
+      System.out.println("Student: [RollNo : " + student.getRollNo() + ", Name : " + student.getName() + " ]");		
+   }
+}
+
+Output
+
+Student: [RollNo : 0, Name : Robert ]
+Student: [RollNo : 1, Name : John ]
+Student: Roll No 0, updated in the database
+Student: [RollNo : 0, Name : Michael ]
+```
+
+```
+28. Front Controller Design Pattern
+
+The front controller design pattern is used to provide a centralized request handling mechanism so that all requests will be handled by a single handler. This handler can do the authentication/ authorization/ logging or tracking of request and then pass the requests to corresponding handlers. Following are the entities of this type of design pattern.
+
+Front Controller - Single handler for all kinds of requests coming to the application (either web based/ desktop based).
+
+Dispatcher - Front Controller may use a dispatcher object which can dispatch the request to corresponding specific handler.
+
+View - Views are the object for which the requests are made.
+
+Implementation
+We are going to create a FrontController and Dispatcher to act as Front Controller and Dispatcher correspondingly. HomeView and StudentView represent various views for which requests can come to front controller.
+
+FrontControllerPatternDemo, our demo class, will use FrontController to demonstrate Front Controller Design Pattern.
+```
+
+<img width="846" alt="Screenshot 2023-04-04 at 6 25 12 PM" src="https://user-images.githubusercontent.com/43849911/229798270-5a36f6fc-907a-4c52-9d57-2b524204f5e2.png"
+
+```
 
 ```
