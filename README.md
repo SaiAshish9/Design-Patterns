@@ -2710,6 +2710,10 @@ FrontControllerPatternDemo, our demo class, will use FrontController to demonstr
 
 <img width="846" alt="Screenshot 2023-04-04 at 6 25 12 PM" src="https://user-images.githubusercontent.com/43849911/229798270-5a36f6fc-907a-4c52-9d57-2b524204f5e2.png"
 
-```
-
+```   
+public class HomeView {
+   public void show(){
+      System.out.println("Displaying Home Page");
+   }
+}
 ```
