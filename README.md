@@ -2143,6 +2143,61 @@ public abstract class Game {
       endPlay();
    }
 }
+
+public class Cricket extends Game {
+
+   @Override
+   void endPlay() {
+      System.out.println("Cricket Game Finished!");
+   }
+
+   @Override
+   void initialize() {
+      System.out.println("Cricket Game Initialized! Start playing.");
+   }
+
+   @Override
+   void startPlay() {
+      System.out.println("Cricket Game Started. Enjoy the game!");
+   }
+}
+
+public class Football extends Game {
+
+   @Override
+   void endPlay() {
+      System.out.println("Football Game Finished!");
+   }
+
+   @Override
+   void initialize() {
+      System.out.println("Football Game Initialized! Start playing.");
+   }
+
+   @Override
+   void startPlay() {
+      System.out.println("Football Game Started. Enjoy the game!");
+   }
+}
+
+public class TemplatePatternDemo {
+   public static void main(String[] args) {
+
+      Game game = new Cricket();
+      game.play();
+      System.out.println();
+      game = new Football();
+      game.play();		
+   }
+}
+
+Cricket Game Initialized! Start playing.
+Cricket Game Started. Enjoy the game!
+Cricket Game Finished!
+
+Football Game Initialized! Start playing.
+Football Game Started. Enjoy the game!
+Football Game Finished!
 ```
 
 ```
