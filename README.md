@@ -1618,3 +1618,24 @@ Julie
 Not Available in Customer Database
 ```
 
+```
+State Design Pattern
+
+In State pattern a class behavior changes based on its state. This type of design pattern comes under behavior pattern.
+
+In State pattern, we create objects which represent various states and a context object whose behavior varies as its state object changes.
+
+Implementation
+
+We are going to create a State interface defining an action and concrete state classes implementing the State interface. Context is a class which carries a State.
+
+StatePatternDemo, our demo class, will use Context and state objects to demonstrate change in Context behavior based on type of state it is in.
+```
+
+<img width="843" alt="Screenshot 2023-04-04 at 4 32 31 PM" src="https://user-images.githubusercontent.com/43849911/229772399-25493a52-1633-4eea-baec-e1a8150ca52c.png">
+
+```
+
+```
+
+
