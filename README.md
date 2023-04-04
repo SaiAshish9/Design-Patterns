@@ -1895,6 +1895,136 @@ Julie is a married women? true
 ```
 
 ```
+Iterator Design Pattern
+
+Iterator pattern is very commonly used design pattern in Java and .Net programming environment. This pattern is used to get a way to access the elements of a collection object in sequential manner without any need to know its underlying representation.
+
+Iterator pattern falls under behavioral pattern category.
+
+Implementation
+We're going to create a Iterator interface which narrates navigation method and a Container interface which retruns the iterator . Concrete classes implementing the Container interface will be responsible to implement Iterator interface and use it
+
+IteratorPatternDemo, our demo class will use NamesRepository, a concrete class implementation to print a Names stored as a collection in NamesRepository.
+```
+
+<img width="853" alt="Screenshot 2023-04-04 at 5 23 15 PM" src="https://user-images.githubusercontent.com/43849911/229783476-2723689c-ea34-4434-b88e-db9751698dd4.png">
+
+```
+public interface Iterator {
+   public boolean hasNext();
+   public Object next();
+}
+
+public interface Container {
+   public Iterator getIterator();
+}
+
+public class NameRepository implements Container {
+   public String names[] = {"Robert" , "John" ,"Julie" , "Lora"};
+
+   @Override
+   public Iterator getIterator() {
+      return new NameIterator();
+   }
+
+   private class NameIterator implements Iterator {
+
+      int index;
+
+      @Override
+      public boolean hasNext() {
+      
+         if(index < names.length){
+            return true;
+         }
+         return false;
+      }
+
+      @Override
+      public Object next() {
+      
+         if(this.hasNext()){
+            return names[index++];
+         }
+         return null;
+      }		
+   }
+}
+
+public class IteratorPatternDemo {
+	
+   public static void main(String[] args) {
+      NameRepository namesRepository = new NameRepository();
+
+      for(Iterator iter = namesRepository.getIterator(); iter.hasNext();){
+         String name = (String)iter.next();
+         System.out.println("Name : " + name);
+      } 	
+   }
+}
+
+Name : Robert
+Name : John
+Name : Julie
+Name : Lora
+```
+
+```
+Mediator Design Pattern
+
+Mediator pattern is used to reduce communication complexity between multiple objects or classes. This pattern provides a mediator class which normally handles all the communications between different classes and supports easy maintenance of the code by loose coupling. Mediator pattern falls under behavioral pattern category.
+
+Implementation
+We are demonstrating mediator pattern by example of a chat room where multiple users can send message to chat room and it is the responsibility of chat room to show the messages to all users. We have created two classes ChatRoom and User. User objects will use ChatRoom method to share their messages.
+
+MediatorPatternDemo, our demo class, will use User objects to show communication between them.
+```
+
+<img width="852" alt="Screenshot 2023-04-04 at 5 26 56 PM" src="https://user-images.githubusercontent.com/43849911/229784329-674c3186-a435-4778-9214-64cf1c64d56b.png">
+
+```
+import java.util.Date;
+
+public class ChatRoom {
+   public static void showMessage(User user, String message){
+      System.out.println(new Date().toString() + " [" + user.getName() + "] : " + message);
+   }
+}
+
+public class User {
+   private String name;
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public User(String name){
+      this.name  = name;
+   }
+
+   public void sendMessage(String message){
+      ChatRoom.showMessage(this,message);
+   }
+}
+
+public class MediatorPatternDemo {
+   public static void main(String[] args) {
+      User robert = new User("Robert");
+      User john = new User("John");
+
+      robert.sendMessage("Hi! John!");
+      john.sendMessage("Hello! Robert!");
+   }
+}
+
+Thu Jan 31 16:05:46 IST 2013 [Robert] : Hi! John!
+Thu Jan 31 16:05:46 IST 2013 [John] : Hello! Robert!
+```
 
 ```
 
+```
