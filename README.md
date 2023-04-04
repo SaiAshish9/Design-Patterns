@@ -3167,7 +3167,7 @@ Implementation
 We are going to create CompositeEntity object acting as CompositeEntity. CoarseGrainedObject will be a class which contains dependent objects. CompositeEntityPatternDemo, our demo class will use Client class to demonstrate use of Composite Entity pattern.
 ```
 
-<img width="865" alt="Screenshot 2023-04-04 at 6 52 55 PM" src="https://user-images.githubusercontent.com/43849911/229806469-44a982e3-bc0f-403e-abd7-dd0ce949236d.png">
+<img width="865" alt="Screenshot 2023-04-04 at 6 52 55 PM" src="https://user-images.githubusercontent.com/43849911/229806469-44a982e3-bc0f-403e-abd7-dd0ce949236d.png" />
 
 ```
 public class DependentObject1 {
@@ -3254,3 +3254,6 @@ Data: Second Test
 Data: Data1
 ```
 
+```
+EJB is an acronym for enterprise java bean. It is a specification provided by Sun Microsystems to develop secured, robust and scalable distributed applications.
+```
