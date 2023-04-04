@@ -1226,6 +1226,177 @@ public class ObserverPatternTest {
 
 <img width="409" alt="Screenshot 2023-04-04 at 12 29 52 AM" src="https://user-images.githubusercontent.com/43849911/229601937-47ae4eaf-6e86-45a6-ac5a-ee63ecd48bd5.png">
 
+https://www.tutorialspoint.com/design_pattern/strategy_pattern.htm
+
+```
+Strategy Design Pattern
+
+In Strategy pattern, a class behavior or its algorithm can be changed at run time. This type of design pattern comes under behavior pattern.
+
+In Strategy pattern, we create objects which represent various strategies and a context object whose behavior varies as per its strategy object. The strategy object changes the executing algorithm of the context object.
+
+Implementation
+
+We are going to create a Strategy interface defining an action and concrete strategy classes implementing the Strategy interface. Context is a class which uses a Strategy.
+
+StrategyPatternDemo, our demo class, will use Context and strategy objects to demonstrate change in Context behaviour based on strategy it deploys or uses.
+```
+
+<img width="658" alt="Screenshot 2023-04-04 at 10 18 00 AM" src="https://user-images.githubusercontent.com/43849911/229689579-eb840d02-367d-4c2f-b563-c3137079bc92.png">
+
+```
+public interface Strategy {
+   public int doOperation(int num1, int num2);
+}
+
+public class OperationAdd implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 + num2;
+   }
+}
+
+public class OperationSubstract implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 - num2;
+   }
+}
+
+public class OperationMultiply implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 * num2;
+   }
+}
+
+public class Context {
+   private Strategy strategy;
+
+   public Context(Strategy strategy){
+      this.strategy = strategy;
+   }
+
+   public int executeStrategy(int num1, int num2){
+      return strategy.doOperation(num1, num2);
+   }
+}
+
+
+public class StrategyPatternDemo {
+   public static void main(String[] args) {
+      Context context = new Context(new OperationAdd());		
+      System.out.println("10 + 5 = " + context.executeStrategy(10, 5));
+
+      context = new Context(new OperationSubstract());		
+      System.out.println("10 - 5 = " + context.executeStrategy(10, 5));
+
+      context = new Context(new OperationMultiply());		
+      System.out.println("10 * 5 = " + context.executeStrategy(10, 5));
+   }
+}
 ```
 
 ```
+Abstract Factory Pattern
+
+Abstract Factory patterns work around a super-factory which creates other factories. This factory is also called as factory of factories. This type of design pattern comes under creational pattern as this pattern provides one of the best ways to create an object.
+
+In Abstract Factory pattern an interface is responsible for creating a factory of related objects without explicitly specifying their classes. Each generated factory can give the objects as per the Factory pattern.
+
+Implementation
+
+We are going to create a Shape interface and a concrete class implementing it. We create an abstract factory class AbstractFactory as next step. Factory class ShapeFactory is defined, which extends AbstractFactory. A factory creator/generator class FactoryProducer is created.
+
+AbstractFactoryPatternDemo, our demo class uses FactoryProducer to get a AbstractFactory object. It will pass information (CIRCLE / RECTANGLE / SQUARE for Shape) to AbstractFactory to get the type of object it needs.
+```
+
+<img width="688" alt="Screenshot 2023-04-04 at 10 21 45 AM" src="https://user-images.githubusercontent.com/43849911/229690008-a3dfdbb6-e138-4975-bcef-2dfd55434c42.png">
+
+```
+public interface Shape {
+   void draw();
+}
+
+public class RoundedRectangle implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside RoundedRectangle::draw() method.");
+   }
+}
+
+public class Rectangle implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside Rectangle::draw() method.");
+   }
+}
+
+public abstract class AbstractFactory {
+   abstract Shape getShape(String shapeType) ;
+}
+
+public class ShapeFactory extends AbstractFactory {
+   @Override
+   public Shape getShape(String shapeType){    
+      if(shapeType.equalsIgnoreCase("RECTANGLE")){
+         return new Rectangle();         
+      }else if(shapeType.equalsIgnoreCase("SQUARE")){
+         return new Square();
+      }	 
+      return null;
+   }
+}
+
+public class RoundedShapeFactory extends AbstractFactory {
+   @Override
+   public Shape getShape(String shapeType){    
+      if(shapeType.equalsIgnoreCase("RECTANGLE")){
+         return new RoundedRectangle();         
+      }else if(shapeType.equalsIgnoreCase("SQUARE")){
+         return new RoundedSquare();
+      }	 
+      return null;
+   }
+}
+
+public class FactoryProducer {
+   public static AbstractFactory getFactory(boolean rounded){   
+      if(rounded){
+         return new RoundedShapeFactory();         
+      }else{
+         return new ShapeFactory();
+      }
+   }
+}
+
+public class AbstractFactoryPatternDemo {
+   public static void main(String[] args) {
+      //get shape factory
+      AbstractFactory shapeFactory = FactoryProducer.getFactory(false);
+      //get an object of Shape Rectangle
+      Shape shape1 = shapeFactory.getShape("RECTANGLE");
+      //call draw method of Shape Rectangle
+      shape1.draw();
+      //get an object of Shape Square 
+      Shape shape2 = shapeFactory.getShape("SQUARE");
+      //call draw method of Shape Square
+      shape2.draw();
+      //get shape factory
+      AbstractFactory shapeFactory1 = FactoryProducer.getFactory(true);
+      //get an object of Shape Rectangle
+      Shape shape3 = shapeFactory1.getShape("RECTANGLE");
+      //call draw method of Shape Rectangle
+      shape3.draw();
+      //get an object of Shape Square 
+      Shape shape4 = shapeFactory1.getShape("SQUARE");
+      //call draw method of Shape Square
+      shape4.draw();
+      
+   }
+}
+```
+
+```
+
+``` 
