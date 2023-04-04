@@ -4,7 +4,7 @@
 3. Builder
 4. Prototype
 5. Proxy
-6. Fascade
+6. Facade
 7. Composite
 8. Decorator
 9. Flyweight
@@ -23,6 +23,15 @@
 22. Memento
 23. Template Method
 24. Visitor
+25. Filter
+26. State
+27. Template
+28. MVC
+29. Data Access
+30. Front Controller
+31. Intercepting
+32. Service Locator
+33. Transfer Object
 ```
 
 ```
