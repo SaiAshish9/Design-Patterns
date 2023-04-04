@@ -29,16 +29,15 @@ https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5ob
 22. Memento
 23. Template
 24. Visitor
-25. Filter
+25. Intercepting Filter
 26. MVC
 27. Data Access
 28. Front Controller
-29. Intercepting
-30. Service Locator
-31. Transfer Object
-32. Business Delegate
-33. Composite Entity
-34. Gang of Four (GOF)
+29. Service Locator
+30. Transfer Object
+31. Business Delegate
+32. Composite Entity
+33. Gang of Four (GOF)
 ```
 
 ```
@@ -2788,7 +2787,271 @@ Displaying Student Page
 ```
 
 ```
-29. Intercepting
+29. Service Locator Design Pattern
+
+The service locator design pattern is used when we want to locate various services using JNDI lookup. Considering high cost of looking up JNDI for a service, Service Locator pattern makes use of caching technique. For the first time a service is required, Service Locator looks up in JNDI and caches the service object. Further lookup or same service via Service Locator is done in its cache which improves the performance of application to great extent. Following are the entities of this type of design pattern.
+
+Service - Actual Service which will process the request. Reference of such service is to be looked upon in JNDI server.
+
+Context / Initial Context - JNDI Context carries the reference to service used for lookup purpose.
+
+Service Locator - Service Locator is a single point of contact to get services by JNDI lookup caching the services.
+
+Cache - Cache to store references of services to reuse them
+
+Client - Client is the object that invokes the services via ServiceLocator.
+
+Implementation
+We are going to create a ServiceLocator,InitialContext, Cache, Service as various objects representing our entities.Service1 and Service2 represent concrete services.
+
+ServiceLocatorPatternDemo, our demo class, is acting as a client here and will use ServiceLocator to demonstrate Service Locator Design Pattern.
+```
+
+<img width="869" alt="Screenshot 2023-04-04 at 6 35 16 PM" src="https://user-images.githubusercontent.com/43849911/229800757-f0ff5059-ca04-4f87-9e9f-86ac7d47f7fe.png">
+
+```
+public interface Service {
+   public String getName();
+   public void execute();
+}
+
+public class Service1 implements Service {
+   public void execute(){
+      System.out.println("Executing Service1");
+   }
+
+   @Override
+   public String getName() {
+      return "Service1";
+   }
+}
+
+public class Service2 implements Service {
+   public void execute(){
+      System.out.println("Executing Service2");
+   }
+
+   @Override
+   public String getName() {
+      return "Service2";
+   }
+}
+
+
+public class InitialContext {
+   public Object lookup(String jndiName){
+   
+      if(jndiName.equalsIgnoreCase("SERVICE1")){
+         System.out.println("Looking up and creating a new Service1 object");
+         return new Service1();
+      }
+      else if (jndiName.equalsIgnoreCase("SERVICE2")){
+         System.out.println("Looking up and creating a new Service2 object");
+         return new Service2();
+      }
+      return null;		
+   }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Cache {
+
+   private List<Service> services;
+
+   public Cache(){
+      services = new ArrayList<Service>();
+   }
+
+   public Service getService(String serviceName){
+   
+      for (Service service : services) {
+         if(service.getName().equalsIgnoreCase(serviceName)){
+            System.out.println("Returning cached  " + serviceName + " object");
+            return service;
+         }
+      }
+      return null;
+   }
+
+   public void addService(Service newService){
+      boolean exists = false;
+      
+      for (Service service : services) {
+         if(service.getName().equalsIgnoreCase(newService.getName())){
+            exists = true;
+         }
+      }
+      if(!exists){
+         services.add(newService);
+      }
+   }
+}
+Step 5
+Create Service Locator
+
+ServiceLocator.java
+
+public class ServiceLocator {
+   private static Cache cache;
+
+   static {
+      cache = new Cache();		
+   }
+
+   public static Service getService(String jndiName){
+
+      Service service = cache.getService(jndiName);
+
+      if(service != null){
+         return service;
+      }
+
+      InitialContext context = new InitialContext();
+      Service service1 = (Service)context.lookup(jndiName);
+      cache.addService(service1);
+      return service1;
+   }
+}
+
+public class ServiceLocatorPatternDemo {
+   public static void main(String[] args) {
+      Service service = ServiceLocator.getService("Service1");
+      service.execute();
+      service = ServiceLocator.getService("Service2");
+      service.execute();
+      service = ServiceLocator.getService("Service1");
+      service.execute();
+      service = ServiceLocator.getService("Service2");
+      service.execute();		
+   }
+}
+
+Output
+
+Looking up and creating a new Service1 object
+Executing Service1
+Looking up and creating a new Service2 object
+Executing Service2
+Returning cached  Service1 object
+Executing Service1
+Returning cached  Service2 object
+Executing Service2
+```
+
+```
+30. Transfer Object Design Pattern
+
+The Transfer Object pattern is used when we want to pass data with multiple attributes in one shot from client to server. Transfer object is also known as Value Object. Transfer Object is a simple POJO class having getter/setter methods and is serializable so that it can be transferred over the network. It does not have any behavior. Server Side business class normally fetches data from the database and fills the POJO and send it to the client or pass it by value. For client, transfer object is read-only. Client can create its own transfer object and pass it to server to update values in database in one shot. Following are the entities of this type of design pattern.
+
+Business Object - Business Service fills the Transfer Object with data.
+
+Transfer Object - Simple POJO having methods to set/get attributes only.
+
+Client - Client either requests or sends the Transfer Object to Business Object.
+
+Implementation
+We are going to create a StudentBO as Business Object,Student as Transfer Object representing our entities.
+
+TransferObjectPatternDemo, our demo class, is acting as a client here and will use StudentBO and Student to demonstrate Transfer Object Design Pattern.
+```
+
+<img width="868" alt="Screenshot 2023-04-04 at 6 41 56 PM" src="https://user-images.githubusercontent.com/43849911/229802418-238e297e-0de3-4894-86f1-f03f7a73b476.png">
+
+```
+public class StudentVO {
+   private String name;
+   private int rollNo;
+
+   StudentVO(String name, int rollNo){
+      this.name = name;
+      this.rollNo = rollNo;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public int getRollNo() {
+      return rollNo;
+   }
+
+   public void setRollNo(int rollNo) {
+      this.rollNo = rollNo;
+   }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentBO {
+	
+   //list is working as a database
+   List<StudentVO> students;
+
+   public StudentBO(){
+      students = new ArrayList<StudentVO>();
+      StudentVO student1 = new StudentVO("Robert",0);
+      StudentVO student2 = new StudentVO("John",1);
+      students.add(student1);
+      students.add(student2);		
+   }
+   public void deleteStudent(StudentVO student) {
+      students.remove(student.getRollNo());
+      System.out.println("Student: Roll No " + student.getRollNo() + ", deleted from database");
+   }
+
+   //retrive list of students from the database
+   public List<StudentVO> getAllStudents() {
+      return students;
+   }
+
+   public StudentVO getStudent(int rollNo) {
+      return students.get(rollNo);
+   }
+
+   public void updateStudent(StudentVO student) {
+      students.get(student.getRollNo()).setName(student.getName());
+      System.out.println("Student: Roll No " + student.getRollNo() +", updated in the database");
+   }
+}
+
+public class TransferObjectPatternDemo {
+   public static void main(String[] args) {
+      StudentBO studentBusinessObject = new StudentBO();
+
+      //print all students
+      for (StudentVO student : studentBusinessObject.getAllStudents()) {
+         System.out.println("Student: [RollNo : " + student.getRollNo() + ", Name : " + student.getName() + " ]");
+      }
+
+      //update student
+      StudentVO student = studentBusinessObject.getAllStudents().get(0);
+      student.setName("Michael");
+      studentBusinessObject.updateStudent(student);
+
+      //get the student
+      student = studentBusinessObject.getStudent(0);
+      System.out.println("Student: [RollNo : " + student.getRollNo() + ", Name : " + student.getName() + " ]");
+   }
+}
+
+Output
+
+Student: [RollNo : 0, Name : Robert ]
+Student: [RollNo : 1, Name : John ]
+Student: Roll No 0, updated in the database
+Student: [RollNo : 0, Name : Michael ]
+```
+
+```
+31. Business Delegate Design Pattern
+
 
 
 ```
