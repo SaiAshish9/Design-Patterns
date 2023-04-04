@@ -27,20 +27,19 @@ https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5ob
 20. Iterator
 21. Mediator
 22. Memento
-23. Template Method
+23. Template
 24. Visitor
 25. Filter
-26. State
-27. Template
-28. MVC
-29. Data Access
-30. Front Controller
-31. Intercepting
-32. Service Locator
-33. Transfer Object
-34. Business Delegate
-35. Composite Entity
-36. Gang of Four (GOF)
+26. Template
+27. MVC
+28. Data Access
+39. Front Controller
+30. Intercepting
+31. Service Locator
+32. Transfer Object
+33. Business Delegate
+34. Composite Entity
+35. Gang of Four (GOF)
 ```
 
 ```
@@ -2026,5 +2025,435 @@ Thu Jan 31 16:05:46 IST 2013 [John] : Hello! Robert!
 ```
 
 ```
+Memento Design Pattern
 
+Memento pattern is used to restore state of an object to a previous state. Memento pattern falls under behavioral pattern category.
+
+Implementation
+Memento pattern uses three actor classes. Memento contains state of an object to be restored. Originator creates and stores states in Memento objects and Caretaker object is responsible to restore object state from Memento. We have created classes Memento, Originator and CareTaker.
+
+MementoPatternDemo, our demo class, will use CareTaker and Originator objects to show restoration of object states.
+```
+
+<img width="855" alt="Screenshot 2023-04-04 at 5 33 51 PM" src="https://user-images.githubusercontent.com/43849911/229785824-b071c494-b360-4c1d-bb05-ab811a8c8734.png">
+
+```
+public class Memento {
+   private String state;
+
+   public Memento(String state){
+      this.state = state;
+   }
+
+   public String getState(){
+      return state;
+   }	
+}
+
+public class Originator {
+   private String state;
+
+   public void setState(String state){
+      this.state = state;
+   }
+
+   public String getState(){
+      return state;
+   }
+
+   public Memento saveStateToMemento(){
+      return new Memento(state);
+   }
+
+   public void getStateFromMemento(Memento memento){
+      state = memento.getState();
+   }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CareTaker {
+   private List<Memento> mementoList = new ArrayList<Memento>();
+
+   public void add(Memento state){
+      mementoList.add(state);
+   }
+
+   public Memento get(int index){
+      return mementoList.get(index);
+   }
+}
+
+public class MementoPatternDemo {
+   public static void main(String[] args) {
+   
+      Originator originator = new Originator();
+      CareTaker careTaker = new CareTaker();
+      
+      originator.setState("State #1");
+      originator.setState("State #2");
+      careTaker.add(originator.saveStateToMemento());
+      
+      originator.setState("State #3");
+      careTaker.add(originator.saveStateToMemento());
+      
+      originator.setState("State #4");
+      System.out.println("Current State: " + originator.getState());		
+      
+      originator.getStateFromMemento(careTaker.get(0));
+      System.out.println("First saved State: " + originator.getState());
+      originator.getStateFromMemento(careTaker.get(1));
+      System.out.println("Second saved State: " + originator.getState());
+   }
+}
+
+Current State: State #4
+First saved State: State #2
+Second saved State: State #3
+```
+
+```
+Template Method Design Pattern
+
+In Template pattern, an abstract class exposes defined way(s)/template(s) to execute its methods. Its subclasses can override the method implementation as per need but the invocation is to be in the same way as defined by an abstract class. This pattern comes under behavior pattern category.
+
+Implementation
+We are going to create a Game abstract class defining operations with a template method set to be final so that it cannot be overridden. Cricket and Football are concrete classes that extend Game and override its methods.
+
+TemplatePatternDemo, our demo class, will use Game to demonstrate use of template pattern.
+```
+
+<img width="882" alt="Screenshot 2023-04-04 at 5 39 30 PM" src="https://user-images.githubusercontent.com/43849911/229786975-614de67b-a903-47be-b242-da54e1fe9c0e.png">
+
+```
+public abstract class Game {
+   abstract void initialize();
+   abstract void startPlay();
+   abstract void endPlay();
+
+   //template method
+   public final void play(){
+
+      //initialize the game
+      initialize();
+
+      //start game
+      startPlay();
+
+      //end game
+      endPlay();
+   }
+}
+```
+
+```
+24. Visitor
+
+In Visitor pattern, we use a visitor class which changes the executing algorithm of an element class. By this way, execution algorithm of element can vary as and when visitor varies. This pattern comes under behavior pattern category. As per the pattern, element object has to accept the visitor object so that visitor object handles the operation on the element object.
+
+Implementation
+We are going to create a ComputerPart interface defining accept opearation.Keyboard, Mouse, Monitor and Computer are concrete classes implementing ComputerPart interface. We will define another interface ComputerPartVisitor which will define a visitor class operations. Computer uses concrete visitor to do corresponding action.
+
+VisitorPatternDemo, our demo class, will use Computer and ComputerPartVisitor classes to demonstrate use of visitor pattern.
+```
+
+<img width="822" alt="Screenshot 2023-04-04 at 5 45 32 PM" src="https://user-images.githubusercontent.com/43849911/229788356-60120ca3-2b7b-4ecd-a636-490c65469cc1.png">
+
+```
+public interface ComputerPart {
+   public void accept(ComputerPartVisitor computerPartVisitor);
+}
+
+public class Keyboard implements ComputerPart {
+
+   @Override
+   public void accept(ComputerPartVisitor computerPartVisitor) {
+      computerPartVisitor.visit(this);
+   }
+}
+
+public class Monitor implements ComputerPart {
+
+   @Override
+   public void accept(ComputerPartVisitor computerPartVisitor) {
+      computerPartVisitor.visit(this);
+   }
+}
+
+public class Mouse implements ComputerPart {
+
+   @Override
+   public void accept(ComputerPartVisitor computerPartVisitor) {
+      computerPartVisitor.visit(this);
+   }
+}
+
+public class Computer implements ComputerPart {
+	
+   ComputerPart[] parts;
+
+   public Computer(){
+      parts = new ComputerPart[] {new Mouse(), new Keyboard(), new Monitor()};		
+   } 
+
+
+   @Override
+   public void accept(ComputerPartVisitor computerPartVisitor) {
+      for (int i = 0; i < parts.length; i++) {
+         parts[i].accept(computerPartVisitor);
+      }
+      computerPartVisitor.visit(this);
+   }
+}
+
+public interface ComputerPartVisitor {
+   public void visit(Computer computer);
+   public void visit(Mouse mouse);
+   public void visit(Keyboard keyboard);
+   public void visit(Monitor monitor);
+}
+
+public class ComputerPartDisplayVisitor implements ComputerPartVisitor {
+
+   @Override
+   public void visit(Computer computer) {
+      System.out.println("Displaying Computer.");
+   }
+
+   @Override
+   public void visit(Mouse mouse) {
+      System.out.println("Displaying Mouse.");
+   }
+
+   @Override
+   public void visit(Keyboard keyboard) {
+      System.out.println("Displaying Keyboard.");
+   }
+
+   @Override
+   public void visit(Monitor monitor) {
+      System.out.println("Displaying Monitor.");
+   }
+}
+
+public class VisitorPatternDemo {
+   public static void main(String[] args) {
+
+      ComputerPart computer = new Computer();
+      computer.accept(new ComputerPartDisplayVisitor());
+   }
+}
+
+Output:
+
+Displaying Mouse.
+Displaying Keyboard.
+Displaying Monitor.
+Displaying Computer.
+```
+
+```
+25. Filter Design Pattern
+
+Filter pattern or Criteria pattern is a design pattern that enables developers to filter a set of objects using different criteria and chaining them in a decoupled way through logical operations. This type of design pattern comes under structural pattern as this pattern combines multiple criteria to obtain single criteria.
+
+Implementation
+We're going to create a Person object, Criteria interface and concrete classes implementing this interface to filter list of Person objects. CriteriaPatternDemo, our demo class uses Criteria objects to filter List of Person objects based on various criteria and their combinations.
+```
+
+<img width="849" alt="Screenshot 2023-04-04 at 5 51 26 PM" src="https://user-images.githubusercontent.com/43849911/229789848-a57d2dac-9e29-4fe9-ad78-5dc4dd9cbba6.png">
+
+```
+public class Person {
+	
+   private String name;
+   private String gender;
+   private String maritalStatus;
+
+   public Person(String name, String gender, String maritalStatus){
+      this.name = name;
+      this.gender = gender;
+      this.maritalStatus = maritalStatus;		
+   }
+
+   public String getName() {
+      return name;
+   }
+   public String getGender() {
+      return gender;
+   }
+   public String getMaritalStatus() {
+      return maritalStatus;
+   }	
+}
+
+import java.util.List;
+
+public interface Criteria {
+   public List<Person> meetCriteria(List<Person> persons);
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CriteriaMale implements Criteria {
+
+   @Override
+   public List<Person> meetCriteria(List<Person> persons) {
+      List<Person> malePersons = new ArrayList<Person>(); 
+      
+      for (Person person : persons) {
+         if(person.getGender().equalsIgnoreCase("MALE")){
+            malePersons.add(person);
+         }
+      }
+      return malePersons;
+   }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CriteriaFemale implements Criteria {
+
+   @Override
+   public List<Person> meetCriteria(List<Person> persons) {
+      List<Person> femalePersons = new ArrayList<Person>(); 
+      
+      for (Person person : persons) {
+         if(person.getGender().equalsIgnoreCase("FEMALE")){
+            femalePersons.add(person);
+         }
+      }
+      return femalePersons;
+   }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CriteriaSingle implements Criteria {
+
+   @Override
+   public List<Person> meetCriteria(List<Person> persons) {
+      List<Person> singlePersons = new ArrayList<Person>(); 
+      
+      for (Person person : persons) {
+         if(person.getMaritalStatus().equalsIgnoreCase("SINGLE")){
+            singlePersons.add(person);
+         }
+      }
+      return singlePersons;
+   }
+}
+
+import java.util.List;
+
+public class AndCriteria implements Criteria {
+
+   private Criteria criteria;
+   private Criteria otherCriteria;
+
+   public AndCriteria(Criteria criteria, Criteria otherCriteria) {
+      this.criteria = criteria;
+      this.otherCriteria = otherCriteria; 
+   }
+
+   @Override
+   public List<Person> meetCriteria(List<Person> persons) {
+   
+      List<Person> firstCriteriaPersons = criteria.meetCriteria(persons);		
+      return otherCriteria.meetCriteria(firstCriteriaPersons);
+   }
+}
+
+import java.util.List;
+
+public class OrCriteria implements Criteria {
+
+   private Criteria criteria;
+   private Criteria otherCriteria;
+
+   public OrCriteria(Criteria criteria, Criteria otherCriteria) {
+      this.criteria = criteria;
+      this.otherCriteria = otherCriteria; 
+   }
+
+   @Override
+   public List<Person> meetCriteria(List<Person> persons) {
+      List<Person> firstCriteriaItems = criteria.meetCriteria(persons);
+      List<Person> otherCriteriaItems = otherCriteria.meetCriteria(persons);
+
+      for (Person person : otherCriteriaItems) {
+         if(!firstCriteriaItems.contains(person)){
+            firstCriteriaItems.add(person);
+         }
+      }	
+      return firstCriteriaItems;
+   }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CriteriaPatternDemo {
+   public static void main(String[] args) {
+      List<Person> persons = new ArrayList<Person>();
+
+      persons.add(new Person("Robert","Male", "Single"));
+      persons.add(new Person("John", "Male", "Married"));
+      persons.add(new Person("Laura", "Female", "Married"));
+      persons.add(new Person("Diana", "Female", "Single"));
+      persons.add(new Person("Mike", "Male", "Single"));
+      persons.add(new Person("Bobby", "Male", "Single"));
+
+      Criteria male = new CriteriaMale();
+      Criteria female = new CriteriaFemale();
+      Criteria single = new CriteriaSingle();
+      Criteria singleMale = new AndCriteria(single, male);
+      Criteria singleOrFemale = new OrCriteria(single, female);
+
+      System.out.println("Males: ");
+      printPersons(male.meetCriteria(persons));
+
+      System.out.println("\nFemales: ");
+      printPersons(female.meetCriteria(persons));
+
+      System.out.println("\nSingle Males: ");
+      printPersons(singleMale.meetCriteria(persons));
+
+      System.out.println("\nSingle Or Females: ");
+      printPersons(singleOrFemale.meetCriteria(persons));
+   }
+
+   public static void printPersons(List<Person> persons){
+   
+      for (Person person : persons) {
+         System.out.println("Person : [ Name : " + person.getName() + ", Gender : " + person.getGender() + ", Marital Status : " + person.getMaritalStatus() + " ]");
+      }
+   }      
+}
+
+Males: 
+Person : [ Name : Robert, Gender : Male, Marital Status : Single ]
+Person : [ Name : John, Gender : Male, Marital Status : Married ]
+Person : [ Name : Mike, Gender : Male, Marital Status : Single ]
+Person : [ Name : Bobby, Gender : Male, Marital Status : Single ]
+
+Females: 
+Person : [ Name : Laura, Gender : Female, Marital Status : Married ]
+Person : [ Name : Diana, Gender : Female, Marital Status : Single ]
+
+Single Males: 
+Person : [ Name : Robert, Gender : Male, Marital Status : Single ]
+Person : [ Name : Mike, Gender : Male, Marital Status : Single ]
+Person : [ Name : Bobby, Gender : Male, Marital Status : Single ]
+
+Single Or Females: 
+Person : [ Name : Robert, Gender : Male, Marital Status : Single ]
+Person : [ Name : Diana, Gender : Female, Marital Status : Single ]
+Person : [ Name : Mike, Gender : Male, Marital Status : Single ]
+Person : [ Name : Bobby, Gender : Male, Marital Status : Single ]
+Person : [ Name : Laura, Gender : Female, Marital Status : Married ]
 ```
