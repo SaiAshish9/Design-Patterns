@@ -40,7 +40,7 @@ https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5ob
 33. Transfer Object
 34. Business Delegate
 35. Composite Entity
-36. Creational, Structural & Behavioral
+36. Gang of Four (GOF)
 ```
 
 ```
@@ -1704,4 +1704,197 @@ Stop State
 
 ```
 Command Design Pattern
+
+Command pattern is a data driven design pattern and falls under behavioral pattern category. A request is wrapped under an object as command and passed to invoker object. Invoker object looks for the appropriate object which can handle this command and passes the command to the corresponding object which executes the command.
+
+Implementation
+We have created an interface Order which is acting as a command. We have created a Stock class which acts as a request. We have concrete command classes BuyStock and SellStock implementing Order interface which will do actual command processing. A class Broker is created which acts as an invoker object. It can take and place orders.
+
+Broker object uses command pattern to identify which object will execute which command based on the type of command. CommandPatternDemo, our demo class, will use Broker class to demonstrate command pattern.
 ```
+
+<img width="858" alt="Screenshot 2023-04-04 at 5 14 01 PM" src="https://user-images.githubusercontent.com/43849911/229781159-b714e1bd-0b5a-4b29-986d-55fde1e0eb50.png">
+
+```
+public interface Order {
+   void execute();
+}
+
+public class Stock {
+	
+   private String name = "ABC";
+   private int quantity = 10;
+
+   public void buy(){
+      System.out.println("Stock [ Name: "+name+", 
+         Quantity: " + quantity +" ] bought");
+   }
+   public void sell(){
+      System.out.println("Stock [ Name: "+name+", 
+         Quantity: " + quantity +" ] sold");
+   }
+}
+
+public class BuyStock implements Order {
+   private Stock abcStock;
+
+   public BuyStock(Stock abcStock){
+      this.abcStock = abcStock;
+   }
+
+   public void execute() {
+      abcStock.buy();
+   }
+}
+
+public class SellStock implements Order {
+   private Stock abcStock;
+
+   public SellStock(Stock abcStock){
+      this.abcStock = abcStock;
+   }
+
+   public void execute() {
+      abcStock.sell();
+   }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+   public class Broker {
+   private List<Order> orderList = new ArrayList<Order>(); 
+
+   public void takeOrder(Order order){
+      orderList.add(order);		
+   }
+
+   public void placeOrders(){
+   
+      for (Order order : orderList) {
+         order.execute();
+      }
+      orderList.clear();
+   }
+}
+
+public class CommandPatternDemo {
+   public static void main(String[] args) {
+      Stock abcStock = new Stock();
+
+      BuyStock buyStockOrder = new BuyStock(abcStock);
+      SellStock sellStockOrder = new SellStock(abcStock);
+
+      Broker broker = new Broker();
+      broker.takeOrder(buyStockOrder);
+      broker.takeOrder(sellStockOrder);
+
+      broker.placeOrders();
+   }
+}
+
+Stock [ Name: ABC, Quantity: 10 ] bought
+Stock [ Name: ABC, Quantity: 10 ] sold
+```
+
+```
+Intepreter Design Pattern
+
+Interpreter pattern provides a way to evaluate language grammar or expression. This type of pattern comes under behavioral pattern. This pattern involves implementing an expression interface which tells to interpret a particular context. This pattern is used in SQL parsing, symbol processing engine etc.
+
+Implementation
+We are going to create an interface Expression and concrete classes implementing the Expression interface. A class TerminalExpression is defined which acts as a main interpreter of context in question. Other classes OrExpression, AndExpression are used to create combinational expressions.
+
+InterpreterPatternDemo, our demo class, will use Expression class to create rules and demonstrate parsing of expressions.
+```
+
+<img width="839" alt="Screenshot 2023-04-04 at 5 17 20 PM" src="https://user-images.githubusercontent.com/43849911/229782165-a1e92bdb-10c1-4979-858b-6e55560e1af4.png">
+
+```
+public interface Expression {
+   public boolean interpret(String context);
+}
+
+public class TerminalExpression implements Expression {
+	
+   private String data;
+
+   public TerminalExpression(String data){
+      this.data = data; 
+   }
+
+   @Override
+   public boolean interpret(String context) {
+   
+      if(context.contains(data)){
+         return true;
+      }
+      return false;
+   }
+}
+
+public class OrExpression implements Expression {
+	 
+   private Expression expr1 = null;
+   private Expression expr2 = null;
+
+   public OrExpression(Expression expr1, Expression expr2) { 
+      this.expr1 = expr1;
+      this.expr2 = expr2;
+   }
+
+   @Override
+   public boolean interpret(String context) {		
+      return expr1.interpret(context) || expr2.interpret(context);
+   }
+}
+
+public class AndExpression implements Expression {
+	 
+   private Expression expr1 = null;
+   private Expression expr2 = null;
+
+   public AndExpression(Expression expr1, Expression expr2) { 
+      this.expr1 = expr1;
+      this.expr2 = expr2;
+   }
+
+   @Override
+   public boolean interpret(String context) {		
+      return expr1.interpret(context) && expr2.interpret(context);
+   }
+}
+
+public class InterpreterPatternDemo {
+
+   //Rule: Robert and John are male
+   public static Expression getMaleExpression(){
+      Expression robert = new TerminalExpression("Robert");
+      Expression john = new TerminalExpression("John");
+      return new OrExpression(robert, john);		
+   }
+
+   //Rule: Julie is a married women
+   public static Expression getMarriedWomanExpression(){
+      Expression julie = new TerminalExpression("Julie");
+      Expression married = new TerminalExpression("Married");
+      return new AndExpression(julie, married);		
+   }
+
+   public static void main(String[] args) {
+      Expression isMale = getMaleExpression();
+      Expression isMarriedWoman = getMarriedWomanExpression();
+
+      System.out.println("John is male? " + isMale.interpret("John"));
+      System.out.println("Julie is a married women? " + isMarriedWoman.interpret("Married Julie"));
+   }
+}
+
+John is male? true
+Julie is a married women? true
+```
+
+```
+
+```
+
