@@ -29,15 +29,16 @@ https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5ob
 22. Memento
 23. Template
 24. Visitor
-25. Intercepting Filter
-26. MVC
-27. Data Access
-28. Front Controller
-29. Service Locator
-30. Transfer Object
-31. Business Delegate
-32. Composite Entity
-33. Gang of Four (GOF)
+25. Filter
+26. Intercepting Filter
+27. MVC
+28. Data Access
+29. Front Controller
+30. Service Locator
+31. Transfer Object
+32. Business Delegate
+33. Composite Entity
+34. Gang of Four (GOF)
 ```
 
 ```
