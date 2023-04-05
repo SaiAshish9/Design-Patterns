@@ -61,7 +61,7 @@ and Behavioral patterns. We'll also discuss another category of design pattern: 
 16. Null Object
 17. State
 18. Command
-19. Intepreter
+19. Interpreter
 20. Iterator
 21. Mediator
 22. Memento
