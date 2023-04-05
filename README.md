@@ -5,7 +5,10 @@ https://www.tutorialspoint.com/design_pattern/design_pattern_overview.htm
 https://www.youtube.com/watch?v=0Ptcaxyne3s&list=PLt4nG7RVVk1h9lxOYSOGI9pcP3I5oblbx&index=3
 
 ```
-Design patterns represent the best practices used by experienced object-oriented software developers. Design patterns are solutions to general problems that software developers faced during software development. These solutions were obtained by trial and error by numerous software developers over quite a substantial period of time.
+Design patterns represent the best practices used by experienced object-oriented software developers.
+Design patterns are solutions to general problems that software developers faced during software development.
+These solutions were obtained by trial and error by numerous software developers 
+over quite a substantial period of time.
 
 What is Gang of Four (GOF)?
 In 1994, four authors Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides published a book titled Design Patterns 
