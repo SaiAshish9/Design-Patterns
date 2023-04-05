@@ -3313,3 +3313,117 @@ Data: Data1
 ```
 EJB is an acronym for enterprise java bean. It is a specification provided by Sun Microsystems to develop secured, robust and scalable distributed applications.
 ```
+
+```
+Intercepting Filter Design Pattern
+
+Properties:
+
+1. The intercepting filter design pattern is used when we want to do some pre-processing / post-processing with request or response of the application. 
+2. Filters are defined and applied on the request before passing the request to actual target application. 
+3. Filters can do the authentication/ authorization/ logging or tracking of request and then pass the requests to corresponding handlers.
+4. Following are the entities of this type of design pattern.
+5. Filter - Filter which will performs certain task prior or after execution of request by request handler.
+6. Filter Chain - Filter Chain carries multiple filters and help to execute them in defined order on target.
+7. Target - Target object is the request handler
+8. Filter Manager - Filter Manager manages the filters and Filter Chain.
+9. Client - Client is the object who sends request to the Target object.
+
+Implementation
+We are going to create a FilterChain,FilterManager, Target, Client as various objects representing our entities.AuthenticationFilter and DebugFilter represent concrete filters.
+
+InterceptingFilterDemo, our demo class, will use Client to demonstrate Intercepting Filter Design Pattern.
+```
+
+<img width="678" alt="Screenshot 2023-04-05 at 10 46 38 AM" src="https://user-images.githubusercontent.com/43849911/229987347-1e485077-de1a-4b21-b4aa-5029c35a6fcc.png">
+
+```
+public interface Filter {
+   public void execute(String request);
+}
+
+public class AuthenticationFilter implements Filter {
+   public void execute(String request){
+      System.out.println("Authenticating request: " + request);
+   }
+}
+
+public class DebugFilter implements Filter {
+   public void execute(String request){
+      System.out.println("request log: " + request);
+   }
+}
+
+public class Target {
+   public void execute(String request){
+      System.out.println("Executing request: " + request);
+   }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FilterChain {
+   private List<Filter> filters = new ArrayList<Filter>();
+   private Target target;
+
+   public void addFilter(Filter filter){
+      filters.add(filter);
+   }
+
+   public void execute(String request){
+      for (Filter filter : filters) {
+         filter.execute(request);
+      }
+      target.execute(request);
+   }
+
+   public void setTarget(Target target){
+      this.target = target;
+   }
+}
+
+public class FilterManager {
+   FilterChain filterChain;
+
+   public FilterManager(Target target){
+      filterChain = new FilterChain();
+      filterChain.setTarget(target);
+   }
+   public void setFilter(Filter filter){
+      filterChain.addFilter(filter);
+   }
+
+   public void filterRequest(String request){
+      filterChain.execute(request);
+   }
+}
+
+public class Client {
+   FilterManager filterManager;
+
+   public void setFilterManager(FilterManager filterManager){
+      this.filterManager = filterManager;
+   }
+
+   public void sendRequest(String request){
+      filterManager.filterRequest(request);
+   }
+}
+
+public class InterceptingFilterDemo {
+   public static void main(String[] args) {
+      FilterManager filterManager = new FilterManager(new Target());
+      filterManager.setFilter(new AuthenticationFilter());
+      filterManager.setFilter(new DebugFilter());
+
+      Client client = new Client();
+      client.setFilterManager(filterManager);
+      client.sendRequest("HOME");
+   }
+}
+
+Authenticating request: HOME
+request log: HOME
+Executing request: HOME
+```
